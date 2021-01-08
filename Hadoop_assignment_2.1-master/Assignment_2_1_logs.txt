@@ -1,0 +1,302 @@
+
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs pwd
+pwd: Unknown command
+[acadgild@localhost ~]$ hdfs dfs -l /user/acadgild
+-l: Unknown command
+[acadgild@localhost ~]$ hdfs dfs -ls /user/acadgild
+17/04/30 15:51:50 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 3 items
+drwxr-xr-x   - acadgild supergroup          0 2015-11-20 11:46 /user/acadgild/Pictures
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:03 /user/acadgild/oozie-acad
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:00 /user/acadgild/share
+[acadgild@localhost ~]$ cd /user/acadgild
+bash: cd: /user/acadgild: No such file or directory
+[acadgild@localhost ~]$ ls /user/acadgild
+ls: cannot access /user/acadgild: No such file or directory
+[acadgild@localhost ~]$ cd ./
+[acadgild@localhost ~]$ ls
+derby.log                                    hadoop         Templates
+Desktop                                      hive-site.xml  terminal.txt
+Documents                                    metastore_db   Videos
+Downloads                                    Music          workspace
+eclipse                                      Pictures
+eclipse-jee-neon-M3-linux-gtk-x86_64.tar.gz  Public
+[acadgild@localhost ~]$ cd hadoop
+[acadgild@localhost hadoop]$ ls
+datanode  namenode  pid
+[acadgild@localhost hadoop]$ cd namenode
+[acadgild@localhost namenode]$ ls
+current  in_use.lock
+[acadgild@localhost namenode]$ hdfs dfs ls
+ls: Unknown command
+Did you mean -ls?  This command begins with a dash.
+[acadgild@localhost namenode]$ hdfs dfs -ls
+17/04/30 15:58:42 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 3 items
+drwxr-xr-x   - acadgild supergroup          0 2015-11-20 11:46 Pictures
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:03 oozie-acad
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:00 share
+[acadgild@localhost namenode]$ cd
+[acadgild@localhost ~]$ ls
+derby.log                                    hadoop         Templates
+Desktop                                      hive-site.xml  terminal.txt
+Documents                                    metastore_db   Videos
+Downloads                                    Music          workspace
+eclipse                                      Pictures
+eclipse-jee-neon-M3-linux-gtk-x86_64.tar.gz  Public
+[acadgild@localhost ~]$ pwd
+/home/acadgild
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -ls /user/acadgild
+17/04/30 15:59:31 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 3 items
+drwxr-xr-x   - acadgild supergroup          0 2015-11-20 11:46 /user/acadgild/Pictures
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:03 /user/acadgild/oozie-acad
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:00 /user/acadgild/share
+[acadgild@localhost ~]$ hdfs dfs mkdir hadoop
+mkdir: Unknown command
+Did you mean -mkdir?  This command begins with a dash.
+[acadgild@localhost ~]$ hdfs dfs -mkdir hadoop
+17/04/30 16:00:40 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -ls /user/acadgild
+17/04/30 16:00:46 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 4 items
+drwxr-xr-x   - acadgild supergroup          0 2015-11-20 11:46 /user/acadgild/Pictures
+drwxr-xr-x   - acadgild supergroup          0 2017-04-30 16:00 /user/acadgild/hadoop
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:03 /user/acadgild/oozie-acad
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:00 /user/acadgild/share
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs touch /hadoop/word-count.txt
+touch: Unknown command
+[acadgild@localhost ~]$ hdfs dfs cat /hadoop/word-count.txt
+cat: Unknown command
+Did you mean -cat?  This command begins with a dash.
+[acadgild@localhost ~]$ hdfs dfs -touch /hadoop/word-count.txt
+-touch: Unknown command
+[acadgild@localhost ~]$ hdfs dfs gedit /hadoop/word-count.txt
+gedit: Unknown command
+[acadgild@localhost ~]$ hdfs dfs -gedit /hadoop/word-count.txt
+-gedit: Unknown command
+[acadgild@localhost ~]$ hdfs dfs -cat /hadoop/word-count.txt
+17/04/30 16:03:06 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+cat: `/hadoop/word-count.txt': No such file or directory
+[acadgild@localhost ~]$ hdfs dfs -appendToFile /hadoop/word-count.txt
+appendToFile: missing destination argument
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -touchz /hadoop/word-count.txt
+17/04/30 16:10:38 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+touchz: `/hadoop/word-count.txt': No such file or directory
+[acadgild@localhost ~]$ hdfs dfs -touchz user/acadgild/hadoop/word-count.txt
+17/04/30 16:11:04 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+touchz: `user/acadgild/hadoop/word-count.txt': No such file or directory
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -touchz user/acadgild/hadoop/
+17/04/30 16:11:56 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+touchz: `user/acadgild/hadoop/': No such file or directory
+[acadgild@localhost ~]$ hdfs dfs -touchz user/acadgild/hadoop/newfile
+17/04/30 16:12:08 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+touchz: `user/acadgild/hadoop/newfile': No such file or directory
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -touchz newfile
+17/04/30 16:14:06 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -ls
+17/04/30 16:14:24 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 5 items
+drwxr-xr-x   - acadgild supergroup          0 2015-11-20 11:46 Pictures
+drwxr-xr-x   - acadgild supergroup          0 2017-04-30 16:00 hadoop
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:14 newfile
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:03 oozie-acad
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:00 share
+[acadgild@localhost ~]$ hdfs dfs -touchz /hadoop/newfile
+17/04/30 16:14:53 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+touchz: `/hadoop/newfile': No such file or directory
+[acadgild@localhost ~]$ hdfs dfs -touchz hadoop/newfile
+17/04/30 16:15:03 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -touchz hadoop/word-count.txt
+17/04/30 16:16:07 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop/
+17/04/30 16:16:20 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 2 items
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:15 hadoop/newfile
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ echo 'Hey Guys!!'|hdfs dfs -put hadoop/word-count.txt
+17/04/30 16:26:10 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+put: `hadoop/word-count.txt': No such file or directory
+[acadgild@localhost ~]$ echo 'Hey Guys!!'|hdfs dfs -put hadoop/word-count.txt
+17/04/30 16:26:38 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+put: `hadoop/word-count.txt': No such file or directory
+[acadgild@localhost ~]$ echo 'Hey Guys!!'|hdfs dfs -put /hadoop/word-count.txt
+17/04/30 16:26:46 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+put: `/hadoop/word-count.txt': No such file or directory
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/word-count.txt
+17/04/30 16:27:13 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop/
+17/04/30 16:27:34 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 2 items
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:15 hadoop/newfile
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -gedit hadoop/wor-count.txt
+-gedit: Unknown command
+[acadgild@localhost ~]$ hdfs dfs -vi hadoop/wor-count.txt
+-vi: Unknown command
+[acadgild@localhost ~]$ hdfs dfs -vi hadoop/word-count.txt
+-vi: Unknown command
+[acadgild@localhost ~]$ vi  hadoop/word-count.txt
+[acadgild@localhost ~]$ cd hadoop/
+[acadgild@localhost hadoop]$ ls
+datanode  namenode  pid
+[acadgild@localhost hadoop]$ cd ..
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ echo 'Hey Guys!!'|hdfs dfs -appendToFile /hadoop/word-count.txt
+appendToFile: missing destination argument
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ echo 'Hey Guys!!'|hdfs dfs -appendToFile - /hadoop/word-count.txt
+17/04/30 16:40:41 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/word-count.txt
+17/04/30 16:41:07 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -lrt hadoop/word-count.txt
+-lrt: Unknown command
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop/word-count.txt
+17/04/30 16:42:00 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ echo "Hey Guys!!"|hdfs dfs -appendToFile - /hadoop/word-count.txt
+echo "Hey Guyshdfs dfs -ls hadoop/word-count.txt"|hdfs dfs -appendToFile - /hadoop/word-count.txt
+17/04/30 16:43:10 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop/word-count.txt17/04/30 16:43:22 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/word-count.txt
+17/04/30 16:43:47 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ echo "Hey Guys"|hdfs dfs -appendToFile - /hadoop/word-count.txt17/04/30 16:44:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/word-count.txt
+17/04/30 16:45:05 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop/word-count.txt
+17/04/30 16:45:22 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/word-count.txt
+17/04/30 19:41:29 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ ls
+derby.log  Downloads                                    hadoop         Music     Templates     workspace
+Desktop    eclipse                                      hive-site.xml  Pictures  terminal.txt
+Documents  eclipse-jee-neon-M3-linux-gtk-x86_64.tar.gz  metastore_db   Public    Videos
+[acadgild@localhost ~]$ echo "Hey Guys"|hdfs dfs -appendToFile - /hadoop/word-count.txt
+17/04/30 19:42:05 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/word-count.txt
+17/04/30 19:42:11 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop/word-count.txt
+17/04/30 19:42:18 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ vim test.txt
+[acadgild@localhost ~]$ hdfs dfs -appendToFile test.txt /hadoop/word-count.txt
+17/04/30 19:43:43 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/word-count.txt
+17/04/30 19:43:50 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop/word-count.txt
+17/04/30 19:44:02 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ ls
+derby.log  Downloads                                    hadoop         Music     Templates     Videos
+Desktop    eclipse                                      hive-site.xml  Pictures  terminal.txt  workspace
+Documents  eclipse-jee-neon-M3-linux-gtk-x86_64.tar.gz  metastore_db   Public    test.txt
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ pwd
+/home/acadgild
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -ls
+17/04/30 22:03:53 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 5 items
+drwxr-xr-x   - acadgild supergroup          0 2015-11-20 11:46 Pictures
+drwxr-xr-x   - acadgild supergroup          0 2017-04-30 16:16 hadoop
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:14 newfile
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:03 oozie-acad
+drwxr-xr-x   - acadgild supergroup          0 2015-11-17 02:00 share
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/
+datanode/ namenode/ pid/      
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop
+17/04/30 22:07:18 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 2 items
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:15 hadoop/newfile
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop\word-count.txt
+17/04/30 22:10:19 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+cat: `hadoopword-count.txt': No such file or directory
+[acadgild@localhost ~]$ hdfs dfs -appendToFile - hadoop\word-count.txt
+17/04/30 22:12:06 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Hi
+How are you?
+I hope everything is going good.
+Thanks
+^C[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/word-count.txt
+17/04/30 22:13:03 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop\word-count.txt
+17/04/30 22:13:23 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Hi
+How are you?
+I hope everything is going good.
+Thanks
+[acadgild@localhost ~]$ 
