@@ -1,0 +1,42 @@
+Code------------
+
+package UDF;
+
+import org.apache.hadoop.hive.ql.exec.UDF;
+
+public class StringConcat extends UDF {
+	
+	public String evaluate(String SEP, String ...array){
+		
+		String result = "";
+		
+		for (String s : array){
+			result += s;
+			result += SEP;
+		}
+		return result.substring(0,result.length()-1);
+	}
+}
+ 
+
+
+
+Adding jar ----------------------------------------
+> add jar /home/acadgild/workspace/Concat.jar;           
+Added [/home/acadgild/workspace/Concat.jar] to class path
+Added resources: [/home/acadgild/workspace/Concat.jar]
+hive> create temporary function concat AS 'UDF.StringConcat';
+OK
+Time taken: 0.018 seconds
+
+Execution ---------------------------------------
+hive> select concat("|","ab","cd","ef");                     
+OK
+ab|cd|ef
+Time taken: 0.913 seconds, Fetched: 1 row(s)
+hive> select concat(",","ab","cd","ef");
+OK
+ab,cd,ef
+Time taken: 0.107 seconds, Fetched: 1 row(s)
+hive> 
+

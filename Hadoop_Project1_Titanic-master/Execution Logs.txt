@@ -1,0 +1,164 @@
+[acadgild@localhost ~]$ cat flume.conf 
+## Titanic data analysis
+
+agent1.sources = source1
+agent1.sinks = sink1
+agent1.channels = channel1
+
+agent1.sources.source1.channels = channel1
+agent1.sinks.sink1.channel = channel1
+agent1.sources.source1.type = spooldir
+agent1.sources.source1.spoolDir = /home/acadgild/Project1/Titanic_data
+agent1.sinks.sink1.type = hdfs
+
+agent1.sinks.sink1.hdfs.path = /user/acadgild/Project1
+agent1.sinks.sink1.hdfs.filePrefix = events
+agent1.sinks.sink1.hdfs.fileSuffix = .log
+agent1.sinks.sink1.hdfs.inUsePrefix = _
+agent1.sinks.sink1.hdfs.fileType = DataStream
+agent1.channels.channel1.type = file
+[acadgild@localhost ~]$ 
+
+Flume command-----------
+flume-ng agent --conf-file flume.conf --name agent1
+
+---------------------------- Sample record -------249,1,1,"Beckwith Mr. Richard Leonard",male,37,1,1,11751,52.5542,D35,S,
+
+> create table TitanicData (
+    > PassengerId int,
+    > Survived int, 
+    > Pclass String,
+    > Name String,
+    > Sex String,
+    > Age int,
+    > SibSp int, 
+    > Parch int,
+    > Ticket int,
+    > Fare int,
+    > Cabin String,
+    > Embarked String
+    > )
+    > row format delimited fields terminated by ','; 
+OK
+Time taken: 0.412 seconds
+hive> 
+    > 
+    > 
+    > show tables
+    > ;
+OK
+titanicdata
+Time taken: 0.055 seconds, Fetched: 1 row(s)
+hive> 
+    > 
+    > 
+    > load data inpath '/user/acadgild/Project1/*' into table titanicdata;
+Loading data to table projects.titanicdata
+Table projects.titanicdata stats: [numFiles=90, totalSize=61111]
+OK
+Time taken: 1.782 seconds
+hive> 
+--------------------------------------------------------
+
+1. In this problem statement, we will find the average fare of each class. -------------------------------
+
+> from titanicdata select pclass,avg(fare) group by pclass;
+Query ID = acadgild_20170615030404_2e89b64a-84f2-4dc2-b794-e3eb413d8953
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1497455915047_0001, Tracking URL = http://localhost:8088/proxy/application_1497455915047_0001/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1497455915047_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-06-15 03:04:31,910 Stage-1 map = 0%,  reduce = 0%
+2017-06-15 03:04:42,586 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.91 sec
+2017-06-15 03:04:54,126 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.9 sec
+MapReduce Total cumulative CPU time: 3 seconds 900 msec
+Ended Job = job_1497455915047_0001
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.9 sec   HDFS Read: 70878 HDFS Write: 62 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 900 msec
+OK
+1	83.74537037037037
+2	20.456521739130434
+3	13.173116089613035
+Time taken: 43.71 seconds, Fetched: 3 row(s)
+hive> 
+
+
+
+ 
+2. In this problem statement, we will find the number of people alive in each class and embarked at Southampton.------------
+
+hive> from titanicdata select Pclass,count(PassengerId) where Embarked like "S" and Survived=0 group by Pclass,Embarked,Survived;
+Query ID = acadgild_20170615031616_7e1aee15-c158-4877-a89a-2d6dcb97d9fa
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1497455915047_0002, Tracking URL = http://localhost:8088/proxy/application_1497455915047_0002/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1497455915047_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-06-15 03:16:53,207 Stage-1 map = 0%,  reduce = 0%
+2017-06-15 03:17:04,458 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.9 sec
+2017-06-15 03:17:13,489 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.77 sec
+MapReduce Total cumulative CPU time: 4 seconds 770 msec
+Ended Job = job_1497455915047_0002
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.77 sec   HDFS Read: 70878 HDFS Write: 16 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 770 msec
+OK
+1	53
+2	88
+3	286
+Time taken: 34.473 seconds, Fetched: 3 row(s)
+hive> 
+
+
+
+3. In this problem statement, we will find out number of males and females who died in each class. 
+
+hive> from titanicdata select Pclass,Sex, Count(PassengerId) where Survived=1 group by Sex,Pclass,Survived; 
+Query ID = acadgild_20170615032525_21447a0b-73aa-44ee-be4f-c97957bc870a
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1497455915047_0004, Tracking URL = http://localhost:8088/proxy/application_1497455915047_0004/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1497455915047_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-06-15 03:25:46,162 Stage-1 map = 0%,  reduce = 0%
+2017-06-15 03:25:57,230 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.12 sec
+2017-06-15 03:26:09,100 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 5.25 sec
+MapReduce Total cumulative CPU time: 5 seconds 250 msec
+Ended Job = job_1497455915047_0004
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 5.25 sec   HDFS Read: 70878 HDFS Write: 66 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 250 msec
+OK
+1	female	91
+2	female	70
+3	female	72
+1	male	45
+2	male	17
+3	male	47
+Time taken: 37.965 seconds, Fetched: 6 row(s)
+hive> 
+
+

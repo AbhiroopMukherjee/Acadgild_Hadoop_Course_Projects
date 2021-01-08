@@ -1,0 +1,71 @@
+TASK-1 -------------------------------------------
+grunt> petrol_set = load 'Petrol_dataset.txt' USING PigStorage(',') AS (District_ID:chararray, Distributer_name:chararray, Buy_rate:chararray, Sell_rate:chararray, volume_IN:int, volume_OUT:int, year:int);
+grunt> grouped_petrol_seller = group petrol_set by Distributer_name;
+grunt> volume_sold_seller = foreach grouped_petrol_seller generate group, SUM(petrol_set.volume_OUT);
+grunt> dump volume_sold_seller
+
+(shell,69266)
+(Bharat,83662)
+(reliance,76558)
+(hindustan,71767)
+
+======================================================
+
+
+TASK-2 ---------------------------------------------
+
+grunt> sorted_petrol_volumeout = order petrol_set by volume_OUT desc;
+grunt> top_id_volumeout = foreach sorted_petrol_volumeout generate District_ID, volume_OUT;
+grunt> top_10_id_volumeout = limit top_id_volumeout 10;
+grunt> dump top_10_id_volumeout
+
+(T1A 9W4,899)
+(S8W 0P4,899)
+(V8U 2T6,898)
+(O9P 9S3,897)
+(O8A 6Z5,897)
+(F6W 6H3,896)
+(J4M 4G3,895)
+(M6S 1P4,895)
+(N5Q 8E5,895)
+(E6O 9P1,895)
+
+=======================================================
+
+TASK-3 ------------------------------------------------
+
+grunt> top_id_year_volumeout = foreach sorted_petrol_volumeout generate District_ID, volume_OUT,year;
+grunt> top_10_id_year_volumeout = limit top_id_year_volumeout 10;
+grunt> dump top_10_id_year_volumeout
+
+
+(T1A 9W4,899,1943)
+(S8W 0P4,899,1925)
+(V8U 2T6,898,2006)
+(O9P 9S3,897,1759)
+(O8A 6Z5,897,1895)
+(F6W 6H3,896,2004)
+(J4M 4G3,895,1721)
+(M6S 1P4,895,1773)
+(N5Q 8E5,895,1842)
+(E6O 9P1,895,1635)
+
+
+========================================================
+
+TASK-4 -------------------------------------------------
+
+grunt> petrol_set = load 'Petrol_dataset.txt' USING PigStorage(',') AS (District_ID:chararray, Distributer_name:chararray, Buy_rate:chararray, Sell_rate:chararray, volume_IN:int, volume_OUT:int, year:int);
+grunt> grouped_petrol_seller = group petrol_set by Distributer_name;
+grunt> volume_sold_seller = foreach grouped_petrol_seller generate group, SUM(petrol_set.volume_OUT) AS Total_vol_sold;
+grunt> sorted_volume_sold_seller = order volume_sold_seller by Total_vol_sold;
+grunt> dump sorted_volume_sold_seller
+
+(shell,69266)
+
+=========================================================
+
+
+
+
+

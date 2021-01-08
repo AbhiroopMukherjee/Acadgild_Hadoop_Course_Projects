@@ -1,0 +1,26 @@
+set hive.support.concurrency = true;
+set hive.enforce.bucketing = true;
+set hive.exec.dynamic.partition.mode = nonstrict;
+set hive.txn.manager = org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+set hive.compactor.initiator.on = true;
+set hive.compactor.worker.threads = 5;
+a positive number on at least one instance of the Thrift metastore service;
+
+
+
+CREATE TABLE college(clg_id int,clg_name string,clg_loc string) clustered by (clg_id) into 5 buckets stored as orc TBLPROPERTIES('transactional'='true');
+
+INSERT INTO table college values(1,'iem','abhi'),(2,'iim','roop'),(3,'iit','sam'),(4,'nit','ram'),(5,'stanford','jojo'),(6,'vit','rimo'),(7,'cambridge','deep');
+
+
+
+
+1
+UPDATE college set clg_name = 'IIT' where clg_id = 6;
+
+hive> UPDATE college set clg_name = 'IIT' where clg_id = 6;
+FAILED: SemanticException [Error 10294]: Attempt to do update or delete using transaction manager that does not support these operations.
+hive> 
+
+
+---- Currently checkong with IT team 

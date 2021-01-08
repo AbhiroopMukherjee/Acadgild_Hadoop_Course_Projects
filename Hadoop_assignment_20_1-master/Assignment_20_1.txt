@@ -1,0 +1,197 @@
+
+Created table in mysql -----------
+create table maxtemp (date varchar(20), temp int);
+
+Did export -------------------
+sqoop export --connect jdbc:mysql://localhost/db1 --username 'root' --table 'maxtemp' --export-dir '/user/acadgild/maxtemp' --input-fields-terminated-by ',' -m 1 --columns date,temp
+
+mysql> select * from maxtemp;
++------------+------+
+| date       | temp |
++------------+------+
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   52 |
++------------+------+
+12 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+
+------------ updated few data and added few records ------------
+[acadgild@localhost ~]$ hdfs dfs -put /home/acadgild/max-temp.txt /user/acadgild/maxtemp/maxtemp.txt
+17/07/10 17:10:41 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -cat /user/acadgild/maxtemp/maxtemp.txt17/07/10 17:10:48 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+10-01-1990,11
+10-05-1990,16
+10-10-1990,06
+10-01-1991,17
+10-06-1991,20
+10-11-1991,12
+10-01-1995,14
+10-06-1995,50
+10-03-1989,14
+10-07-1989,18
+10-07-1995,50
+10-07-1996,52
+10-08-1996,51
+
+
+Tried update only ------------------------------ Result:- Updating the existing records without adding new records
+sqoop export --connect jdbc:mysql://localhost/db1 --username 'root' --table 'maxtemp' --update-mode updateonly --update-key date --export-dir '/user/acadgild/maxtemp' --input-fields-terminated-by ',' -m 1 --columns date,temp 		
+
+
+mysql> select * from maxtemp; --------------------- Before export
++------------+------+
+| date       | temp |
++------------+------+
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   52 |
+| 10-08-1996 |   51 |
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   48 |
+| 10-08-1996 |   51 |
++------------+------+
+26 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> select * from maxtemp; --------------- After export
++------------+------+
+| date       | temp |
++------------+------+
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   47 |
+| 10-08-1996 |   50 |
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   47 |
+| 10-08-1996 |   50 |
++------------+------+
+26 rows in set (0.00 sec)
+
+mysql> 
+
+
+----------- Tried doing upsert ---------- Upsert not happening rather append is happening. Raised ticket with IT team
+
+sqoop export --connect jdbc:mysql://localhost/db1 --username 'root' --table 'maxtemp' --update-mode allowinsert --update-key date --export-dir '/user/acadgild/maxtemp' --input-fields-terminated-by ',' -m 1 --columns date,temp 
+
+
+mysql> select * from maxtemp;
++------------+------+
+| date       | temp |
++------------+------+
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   47 |
+| 10-08-1996 |   50 |
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   47 |
+| 10-08-1996 |   50 |
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   52 |
+| 10-08-1996 |   51 |
+| 10-01-1990 |   11 |
+| 10-05-1990 |   16 |
+| 10-10-1990 |    6 |
+| 10-01-1991 |   17 |
+| 10-06-1991 |   20 |
+| 10-11-1991 |   12 |
+| 10-01-1995 |   14 |
+| 10-06-1995 |   50 |
+| 10-03-1989 |   14 |
+| 10-07-1989 |   18 |
+| 10-07-1995 |   50 |
+| 10-07-1996 |   47 |
+| 10-08-1996 |   50 |
+| 10-09-1996 |   40 |
++------------+------+
+53 rows in set (0.00 sec)
+
+mysql> 
+
+
+
+
+

@@ -1,0 +1,65 @@
+
+mysql> select * from company;
++------+----------+-----------+
+| id   | name     | location  |
++------+----------+-----------+
+|    1 | acadgild | Bangalore |
+|    2 | eduvista | Walnut    |
+|    3 | eduvista | Bangalore |
++------+----------+-----------+
+3 rows in set (0.00 sec)
+
+[acadgild@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/db1 --username root --table company -m1 --target-dir '/sqoopout/'
+
+
+[acadgild@localhost ~]$ hdfs dfs -ls /sqoopout/
+17/07/10 19:05:14 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 2 items
+-rw-r--r--   1 acadgild supergroup          0 2017-07-10 19:04 /sqoopout/_SUCCESS
+-rw-r--r--   1 acadgild supergroup         60 2017-07-10 19:04 /sqoopout/part-m-00000
+[acadgild@localhost ~]$ hdfs dfs -cat /sqoopout/part-m-00000
+17/07/10 19:05:27 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,acadgild,Bangalore
+2,eduvista,Walnut
+3,eduvista,Bangalore
+[acadgild@localhost ~]$ 
+
+
+
+
+mysql> insert into company values(4,'acadgild','Hyderabad'),(5,'eduvista','Kolkata');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> 
+mysql> select * from company;
++------+----------+-----------+
+| id   | name     | location  |
++------+----------+-----------+
+|    1 | acadgild | Bangalore |
+|    2 | eduvista | Walnut    |
+|    3 | eduvista | Bangalore |
+|    4 | acadgild | Hyderabad |
+|    5 | eduvista | Kolkata   |
++------+----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> 
+
+
+
+
+sqoop import --connect jdbc:mysql://localhost/db1 --username root --table company -m1 --target-dir '/sqoopout/' --incremental append  --check-column id  --last value 3
+
+
+[acadgild@localhost ~]$ hdfs dfs -cat /sqoopout/part-m-0000017/07/10 19:18:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,acadgild,Bangalore
+2,eduvista,Walnut
+3,eduvista,Bangalore
+[acadgild@localhost ~]$ 
+
+
+
+---- NOT ABLE TO APPEND...!! Checking with IT team

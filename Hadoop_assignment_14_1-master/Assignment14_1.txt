@@ -1,0 +1,50 @@
+create table temperature_data (
+date String,
+zip int,
+temperature float 
+)
+row format delimited fields terminated by ',' ;
+
+
+hive> load data local inpath '/home/acadgild/HIVE/dataset_Session_14.txt' overwrite into TABLE temperature_data;
+Loading data to table custom.temperature_data
+Table custom.temperature_data stats: [numFiles=1, numRows=0, totalSize=437, rawDataSize=0]
+OK
+Time taken: 1.036 seconds
+hive> 
+    > 
+    > 
+    > select * from temperature_data;
+OK
+10-01-1990	123112	10.0
+14-02-1991	283901	11.0
+10-03-1990	381920	15.0
+10-01-1991	302918	22.0
+12-02-1990	384902	9.0
+10-01-1991	123112	11.0
+14-02-1990	283901	12.0
+10-03-1991	381920	16.0
+10-01-1990	302918	23.0
+12-02-1991	384902	10.0
+10-01-1993	123112	11.0
+14-02-1994	283901	12.0
+10-03-1993	381920	16.0
+10-01-1994	302918	23.0
+12-02-1991	384902	10.0
+10-01-1991	123112	11.0
+14-02-1990	283901	12.0
+10-03-1991	381920	16.0
+10-01-1990	302918	23.0
+12-02-1991	384902	10.0
+Time taken: 0.42 seconds, Fetched: 20 row(s)
+hive> describe temperature_data;
+OK
+date                	string              	                    
+zip                 	int                 	                    
+temperature         	float               	                    
+Time taken: 0.204 seconds, Fetched: 3 row(s)
+hive> 
+
+
+
+

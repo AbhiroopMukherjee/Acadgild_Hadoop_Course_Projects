@@ -1,0 +1,113 @@
+
+create table employees (
+name String,
+job String,
+dept String,
+type String,
+salary int
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+
+
+create table employees (
+id int,
+name String,
+sal int,
+dept String
+)
+row format delimited fields terminated by '\t';
+
+
+load data local inpath '/home/acadgild/HIVE/Employee_dataset.txt' into table employees;
+
+
+
+1. Get a list of employees who receive a salary less than 100K, compared to their immediate employee with higher salary in the same unit ----------------------------------- 
+
+ > SELECT id, name, sal, dept, (lead_salary - sal) AS diff_salary FROM
+(
+SELECT id, name, sal, dept, LEAD(sal) OVER (PARTITION BY dept ORDER BY sal) AS lead_salary
+FROM employees
+) temp
+WHERE lead_salary - sal > 100; 
+Query ID = acadgild_20170710135858_d866a127-e0a7-4cdf-84ec-544aa7562e20
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1499709095844_0001, Tracking URL = http://localhost:8088/proxy/application_1499709095844_0001/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1499709095844_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-07-10 13:58:56,184 Stage-1 map = 0%,  reduce = 0%
+2017-07-10 13:59:08,383 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.48 sec
+2017-07-10 13:59:23,663 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.26 sec
+MapReduce Total cumulative CPU time: 4 seconds 260 msec
+Ended Job = job_1499709095844_0001
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.26 sec   HDFS Read: 509 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 260 msec
+OK
+Time taken: 59.229 seconds
+hive> select * from employees;
+OK
+1	Amit	105	Data Minning
+2	Pankaj	85	Data Engineer
+3	Kiran	110	Data Scientist
+4	Arpitha	95	Data Engineer
+5	Viraj	105	Data Mining
+6	Smitha	80	Data Analyst
+7	Supriya	90	Data Engineer
+8	Vihan	120	Data Scientist
+9	Emma	100	Data Engineer
+10	Siddharath	100	Data Engineer
+Time taken: 0.138 seconds, Fetched: 10 row(s)
+hive> 
+
+
+
+2. List of all employees who draw higher salary than the average salary of that department-----------------
+
+> SELECT name, sal, dept, avg_salary
+FROM
+(
+SELECT avg(sal) OVER (PARTITION BY dept) AS avg_salary, id, name, sal, dept
+FROM employees
+) temp
+WHERE sal > avg_salary; 
+Query ID = acadgild_20170710140202_24c30b29-926a-4576-becf-f2655eddcb9d
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1499709095844_0002, Tracking URL = http://localhost:8088/proxy/application_1499709095844_0002/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1499709095844_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-07-10 14:02:46,761 Stage-1 map = 0%,  reduce = 0%
+2017-07-10 14:02:54,714 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.1 sec
+2017-07-10 14:03:05,693 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.38 sec
+MapReduce Total cumulative CPU time: 3 seconds 380 msec
+Ended Job = job_1499709095844_0002
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.38 sec   HDFS Read: 509 HDFS Write: 123 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 380 msec
+OK
+Siddharath	100	Data Engineer	94.0
+Emma	100	Data Engineer	94.0
+Arpitha	95	Data Engineer	94.0
+Vihan	120	Data Scientist	115.0
+Time taken: 34.076 seconds, Fetched: 4 row(s)
+hive> 
+
+
+
+

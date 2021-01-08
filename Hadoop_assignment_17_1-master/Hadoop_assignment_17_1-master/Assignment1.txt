@@ -1,0 +1,39 @@
+1. What is NoSQL data base? 
+Ans:-
+NoSQL describes the wide variety of database technologies created to address the shortcomings of RDBMS and the demands of modern software development.
+Features:- 
+1.Heterogeneous containers, including sets, maps, and arrays
+2.NoSQL analytics systems support runtime type identification and conversion so that custom business logic can be used to dictate analytic treatment of variation.
+3.Data is stored in single tables as compared to joining multiple tables.
+4.Adding more of the economical servers allows NoSQL databases to scale to handle more data.
+5.Distributed databases can store and process a set of information on more than one device.
+
+
+
+2. How does data get stored in NoSQl database? 
+Ans:-
+It stores data in a key-value approach. It has table name, columns family, versions of data.
+
+
+3. What is a column family in HBase? 
+Unlike RDBMS, in HBase columns can be sub-divided into many more columns and can have different types of data supported for a particular column family.
+
+
+4. How many maximum number of columns can be added to HBase table? 
+There are no limits for columns as it supports storing data region wise where single table can be distributed among multiple region servers.
+
+
+5. Why columns are not defined at the time of table creation in HBase? 
+Because of the column family approach, one can devide the colums into various subdivisions for each record insertion.
+
+
+6. How does data get managed in HBase? 
+Unlike RDBMS, data are stored in a columnar approach where each column data are stored in single group and the other columns follow. Hey row key is used to access or store a paticular set of data.
+
+
+7. What happens internally when new data gets inserted into HBase table? 
+Following are the steps when data is inserted:-
+1.When the client issues a Put request, the first step is to write the data to the write-ahead log, the WAL.
+2.Edits are appended to the end of the WAL file that is stored on disk. 
+3.The WAL is used to recover not-yet-persisted data in case a server crashes.
+4.Once the data is written to the WAL, it is placed in the MemStore. Then, the put request acknowledgement returns to the client.

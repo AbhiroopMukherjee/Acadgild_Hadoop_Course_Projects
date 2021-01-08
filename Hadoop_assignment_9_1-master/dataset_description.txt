@@ -1,0 +1,7 @@
+Column1: District.ID I4N 1M1 varchar
+Column2: ,Distributer_name shell varchar
+Column3: Buy_rate (million) $957.70 varchar
+Column4: Sell_rate(million) $5779.92 varchar
+Column5: volumeIN(millioncubic litter) 933, int
+Column6: volume_OUT(millioncubic litter) 843, int
+Column7: Year 1624 int

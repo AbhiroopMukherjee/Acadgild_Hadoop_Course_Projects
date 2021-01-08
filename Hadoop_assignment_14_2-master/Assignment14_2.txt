@@ -1,0 +1,157 @@
+1------------------------ Fetch date and temperature from temperature_data where zip code is greater than 300000 and less than 399999. 
+
+> from temperature_data select date,temperature where zip>300000 and zip<350000;
+OK
+10-01-1991	22.0
+10-01-1990	23.0
+10-01-1994	23.0
+10-01-1990	23.0
+Time taken: 0.384 seconds, Fetched: 4 row(s)
+hive> 
+
+
+2--------------------------- Calculate maximum temperature corresponding to every year from temperature_data table. 
+
+ > from temperature_data select MAX(temperature),substring(date,7,10) group by substring(date,7,10);
+Query ID = acadgild_20170503222727_7f0a4f07-0147-4bc6-8a2c-bfea1fce15a8
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0002, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0002/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-03 22:27:57,841 Stage-1 map = 0%,  reduce = 0%
+2017-05-03 22:28:06,537 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.97 sec
+2017-05-03 22:28:15,415 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.45 sec
+MapReduce Total cumulative CPU time: 3 seconds 450 msec
+Ended Job = job_1493543267948_0002
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.45 sec   HDFS Read: 682 HDFS Write: 40 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 450 msec
+OK
+23.0	1990
+22.0	1991
+16.0	1993
+23.0	1994
+Time taken: 30.584 seconds, Fetched: 4 row(s)
+hive> 
+
+
+3----------------------------------------------------- Calculate maximum temperature from temperature_data table corresponding to those years which have at least 2 entries in the table. 
+
+    > from temperature_data select MAX(temperature),substring(date,7,10) group by substring(date,7,10)  
+    > having count(temperature) > 2;                                                                  
+Query ID = acadgild_20170503224242_96df0717-495e-47ee-9a6d-f6b1b6a5a37a
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0003, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0003/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-03 22:42:21,793 Stage-1 map = 0%,  reduce = 0%
+2017-05-03 22:42:30,590 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.97 sec
+2017-05-03 22:42:41,535 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.66 sec
+MapReduce Total cumulative CPU time: 4 seconds 660 msec
+Ended Job = job_1493543267948_0003
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.66 sec   HDFS Read: 682 HDFS Write: 20 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 660 msec
+OK
+23.0	1990
+22.0	1991
+Time taken: 32.581 seconds, Fetched: 2 row(s)
+hive> 
+
+
+4 ----------------------------------------------------- Create a view on the top of last query, name it temperature_data_vw. 
+
+    > create view temperature_data_vw as select 
+    > MAX(temperature),substring(date,7,10) 
+    > from temperature_data
+    > group by substring(date,7,10)
+    > having count(temperature) > 2;
+OK
+Time taken: 0.641 seconds
+hive> 
+    > 
+    > select * from temperature_data_vw;
+Query ID = acadgild_20170503225252_7c346933-8d22-44e4-9f69-2c2446f510eb
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0004, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0004/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-03 22:53:09,944 Stage-1 map = 0%,  reduce = 0%
+2017-05-03 22:53:23,739 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.79 sec
+2017-05-03 22:53:54,627 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 7.05 sec
+MapReduce Total cumulative CPU time: 7 seconds 50 msec
+Ended Job = job_1493543267948_0004
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 7.05 sec   HDFS Read: 682 HDFS Write: 20 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 50 msec
+OK
+23.0	1990
+22.0	1991
+Time taken: 56.54 seconds, Fetched: 2 row(s)
+hive> 
+
+
+
+
+5 ----------------------------------------- Export contents from temperature_data_vw to a file in local file system, such that each file is '|' delimited. 
+
+hive> insert overwrite local directory '/home/acadgild/HIVE/temp_data'
+    > row format delimited fields terminated by '|'                   
+    > select * from temperature_data_vw;                              
+Query ID = acadgild_20170503231212_4e8eecbf-c1ab-4480-8774-9f9e5b7a1a5c
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0006, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0006/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0006
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-03 23:12:58,836 Stage-1 map = 0%,  reduce = 0%
+2017-05-03 23:13:07,565 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.93 sec
+2017-05-03 23:13:18,460 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.48 sec
+MapReduce Total cumulative CPU time: 4 seconds 480 msec
+Ended Job = job_1493543267948_0006
+Copying data to local directory /home/acadgild/HIVE/temp_data
+Copying data to local directory /home/acadgild/HIVE/temp_data
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.48 sec   HDFS Read: 682 HDFS Write: 20 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 480 msec
+OK
+Time taken: 32.227 seconds
+hive> 
+
+
+[acadgild@localhost HIVE]$ cat temp_data/000000_0 
+23.0|1990
+22.0|1991
+[acadgild@localhost HIVE]$ 
+

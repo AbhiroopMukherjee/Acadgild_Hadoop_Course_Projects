@@ -1,0 +1,457 @@
+hive> 
+    > 
+    > create database olympics;
+OK
+Time taken: 0.115 seconds
+hive> 
+    > 
+    > use olympics;
+OK
+Time taken: 0.03 seconds
+hive> 
+    > 
+    > 
+    > create table olympics (
+    > Athlete String, 
+    > Age int, 
+    > Country String,
+    > Year int,
+    > Closing_date String,
+    > Sport String,
+    > Gold int,
+    > Silver int,
+    > Bronze int,
+    > Total int
+    > )
+    > row format delimited fields terminated by ',';
+OK
+Time taken: 0.124 seconds
+
+    > 
+    > load data local inpath '/home/acadgild/HIVE/olympix_data.csv' overwrite into table olympics;
+Loading data to table olympics.olympics
+Table olympics.olympics stats: [numFiles=1, totalSize=518669]
+OK
+Time taken: 0.518 seconds
+hive> 
+    > 
+    > 
+    > 
+
+
+ 
+1. Write a Hive program to find the number of medals won by each country in swimming. ------------------------------------
+
+hive> from olympics select sum(Total), Country, Sport where Sport like 'Swimming' group by Country,Sport ;
+Query ID = acadgild_20170504021111_ccf365cd-124e-4416-83f9-a59217f84961
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0010, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0010/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0010
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-04 02:11:39,490 Stage-1 map = 0%,  reduce = 0%
+2017-05-04 02:11:48,573 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.46 sec
+2017-05-04 02:11:57,374 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.35 sec
+MapReduce Total cumulative CPU time: 4 seconds 350 msec
+Ended Job = job_1493543267948_0010
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.35 sec   HDFS Read: 527520 HDFS Write: 692 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 350 msec
+OK
+1	Argentina	Swimming
+163	Australia	Swimming
+3	Austria	Swimming
+2	Belarus	Swimming
+8	Brazil	Swimming
+5	Canada	Swimming
+35	China	Swimming
+2	Costa Rica	Swimming
+1	Croatia	Swimming
+1	Denmark	Swimming
+39	France	Swimming
+32	Germany	Swimming
+11	Great Britain	Swimming
+9	Hungary	Swimming
+16	Italy	Swimming
+43	Japan	Swimming
+1	Lithuania	Swimming
+46	Netherlands	Swimming
+2	Norway	Swimming
+3	Poland	Swimming
+6	Romania	Swimming
+20	Russia	Swimming
+1	Serbia	Swimming
+2	Slovakia	Swimming
+1	Slovenia	Swimming
+11	South Africa	Swimming
+4	South Korea	Swimming
+3	Spain	Swimming
+9	Sweden	Swimming
+1	Trinidad and Tobago	Swimming
+3	Tunisia	Swimming
+7	Ukraine	Swimming
+267	United States	Swimming
+7	Zimbabwe	Swimming
+Time taken: 30.11 seconds, Fetched: 34 row(s)
+hive> 
+
+
+
+2. Write a Hive program to find the number of medals that India won year wise. ----------------------------------
+
+> from olympics select sum(Total), Country, year where Country like 'India' group by Year,Country ;
+Query ID = acadgild_20170504022020_88eb7cfd-ab5b-4616-b653-4f3fdf80e5be
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0011, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0011/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0011
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-04 02:20:16,108 Stage-1 map = 0%,  reduce = 0%
+2017-05-04 02:20:23,761 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.79 sec
+2017-05-04 02:20:32,519 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.27 sec
+MapReduce Total cumulative CPU time: 3 seconds 270 msec
+Ended Job = job_1493543267948_0011
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.27 sec   HDFS Read: 527520 HDFS Write: 52 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 270 msec
+OK
+1	India	2000
+1	India	2004
+3	India	2008
+6	India	2012
+Time taken: 28.007 seconds, Fetched: 4 row(s)
+hive> 
+
+
+
+3. Write a Hive Program to find the total number of medals each country won--------------------------------------------
+
+hive> from olympics select sum(Total) as sum, Country group by Country sort by sum;       
+Query ID = acadgild_20170504022323_ce15f882-7f21-4231-9fa7-b42f57d5c3e6
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0013, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0013/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0013
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-04 02:23:49,008 Stage-1 map = 0%,  reduce = 0%
+2017-05-04 02:23:56,679 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.41 sec
+2017-05-04 02:24:06,377 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.03 sec
+MapReduce Total cumulative CPU time: 3 seconds 30 msec
+Ended Job = job_1493543267948_0013
+Launching Job 2 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0014, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0014/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0014
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2017-05-04 02:24:21,346 Stage-2 map = 0%,  reduce = 0%
+2017-05-04 02:24:29,178 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 1.12 sec
+2017-05-04 02:24:37,698 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 2.57 sec
+MapReduce Total cumulative CPU time: 2 seconds 570 msec
+Ended Job = job_1493543267948_0014
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.03 sec   HDFS Read: 527520 HDFS Write: 3132 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 2.57 sec   HDFS Read: 3537 HDFS Write: 1315 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 600 msec
+OK
+1	Panama
+1	Mozambique
+1	Bahrain
+1	Uruguay
+1	Barbados
+1	United Arab Emirates
+1	Botswana
+1	Uganda
+1	Cyprus
+1	Togo
+1	Syria
+1	Ecuador
+1	Eritrea
+1	Sudan
+1	Sri Lanka
+1	Gabon
+1	Grenada
+1	Guatemala
+1	Macedonia
+1	Mauritius
+2	Costa Rica
+2	Kuwait
+2	Afghanistan
+2	Vietnam
+2	Puerto Rico
+3	Kyrgyzstan
+3	Qatar
+3	Malaysia
+3	Hong Kong
+3	Tajikistan
+4	Israel
+4	Tunisia
+4	Venezuela
+5	Moldova
+5	Dominican Republic
+6	Saudi Arabia
+7	Zimbabwe
+7	Singapore
+8	Algeria
+8	Egypt
+9	Portugal
+9	Ireland
+10	Armenia
+10	Mongolia
+11	Morocco
+11	India
+13	Colombia
+14	Montenegro
+15	Iceland
+17	Paraguay
+17	Latvia
+18	Thailand
+18	Belgium
+18	Estonia
+19	Trinidad and Tobago
+19	Uzbekistan
+20	Cameroon
+20	Chinese Taipei
+21	North Korea
+22	Indonesia
+22	Chile
+23	Georgia
+24	Iran
+24	Bahamas
+25	Slovenia
+25	South Africa
+25	Azerbaijan
+28	Turkey
+29	Ethiopia
+30	Lithuania
+31	Serbia
+35	Slovakia
+38	Serbia and Montenegro
+38	Mexico
+39	Kenya
+39	Nigeria
+41	Bulgaria
+42	Kazakhstan
+52	New Zealand
+59	Greece
+80	Poland
+80	Jamaica
+81	Czech Republic
+81	Croatia
+89	Denmark
+91	Austria
+93	Switzerland
+97	Belarus
+118	Finland
+123	Romania
+141	Argentina
+143	Ukraine
+145	Hungary
+181	Sweden
+188	Cuba
+192	Norway
+205	Spain
+221	Brazil
+282	Japan
+308	South Korea
+318	Netherlands
+318	France
+322	Great Britain
+331	Italy
+370	Canada
+530	China
+609	Australia
+629	Germany
+768	Russia
+1312	United States
+Time taken: 58.887 seconds, Fetched: 110 row(s)
+
+
+
+4. Write a Hive program to find the number of gold medals each country won-------------------------------------------
+
+> from olympics select sum(Gold) as sum, Country group by Country sort by sum desc;
+Query ID = acadgild_20170504022626_4d015ecd-34b1-4992-9f06-de8381fb5d90
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0015, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0015/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0015
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-04 02:26:39,960 Stage-1 map = 0%,  reduce = 0%
+2017-05-04 02:26:48,535 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.34 sec
+2017-05-04 02:26:57,052 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.93 sec
+MapReduce Total cumulative CPU time: 2 seconds 930 msec
+Ended Job = job_1493543267948_0015
+Launching Job 2 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0016, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0016/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0016
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2017-05-04 02:27:12,345 Stage-2 map = 0%,  reduce = 0%
+2017-05-04 02:27:19,850 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 1.02 sec
+2017-05-04 02:27:30,716 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 2.5 sec
+MapReduce Total cumulative CPU time: 2 seconds 500 msec
+Ended Job = job_1493543267948_0016
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 2.93 sec   HDFS Read: 527520 HDFS Write: 3107 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 2.5 sec   HDFS Read: 3512 HDFS Write: 1276 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 430 msec
+OK
+552	United States
+234	China
+234	Russia
+223	Germany
+168	Canada
+163	Australia
+124	Great Britain
+110	South Korea
+108	France
+101	Netherlands
+97	Norway
+86	Italy
+77	Hungary
+57	Japan
+57	Sweden
+57	Cuba
+57	Romania
+49	Argentina
+46	Denmark
+46	Brazil
+36	Austria
+35	Croatia
+31	Ukraine
+24	Jamaica
+21	Switzerland
+20	Cameroon
+20	Poland
+19	Spain
+19	Mexico
+18	New Zealand
+17	Belarus
+14	Czech Republic
+13	Kazakhstan
+13	Ethiopia
+12	Greece
+11	Finland
+11	Serbia and Montenegro
+11	Kenya
+11	Bahamas
+10	Slovakia
+10	South Africa
+10	Iran
+9	Turkey
+8	Bulgaria
+6	Nigeria
+6	Azerbaijan
+6	Georgia
+6	North Korea
+6	Estonia
+6	Thailand
+5	Slovenia
+5	Uzbekistan
+5	Lithuania
+5	Indonesia
+3	Latvia
+3	Dominican Republic
+3	Chile
+2	Zimbabwe
+2	Tunisia
+2	Morocco
+2	Mongolia
+2	Colombia
+2	Chinese Taipei
+2	Belgium
+2	Algeria
+1	India
+1	Grenada
+1	Mozambique
+1	Panama
+1	Egypt
+1	Portugal
+1	Serbia
+1	Trinidad and Tobago
+1	Uganda
+1	United Arab Emirates
+1	Venezuela
+1	Ireland
+1	Israel
+0	Paraguay
+0	Eritrea
+0	Bahrain
+0	Ecuador
+0	Iceland
+0	Puerto Rico
+0	Qatar
+0	Cyprus
+0	Saudi Arabia
+0	Kuwait
+0	Costa Rica
+0	Armenia
+0	Vietnam
+0	Singapore
+0	Sri Lanka
+0	Sudan
+0	Syria
+0	Tajikistan
+0	Togo
+0	Botswana
+0	Kyrgyzstan
+0	Hong Kong
+0	Guatemala
+0	Afghanistan
+0	Macedonia
+0	Malaysia
+0	Mauritius
+0	Moldova
+0	Gabon
+0	Montenegro
+0	Uruguay
+0	Barbados
+Time taken: 60.221 seconds, Fetched: 110 row(s)
+
+
+
+
+
+
+
+

@@ -1,0 +1,60 @@
+create table employee_details (
+name String,
+skill String,
+exp int,
+location String
+)
+row format delimited fields terminated by ',';
+    > row format delimited fields terminated by ',';
+OK
+Time taken: 0.487 seconds
+hive> 
+
+
+------------------------------------ Calculate the number of employees corresponding to each skill from the table 'employee' which is loaded in the Demo. 
+
+hive> load data local inpath '/home/acadgild/HIVE/emp_details.txt' into table employee_details ;
+Loading data to table employee.employee_details
+Table employee.employee_details stats: [numFiles=1, totalSize=159]
+OK
+Time taken: 1.391 seconds
+hive> 
+    > 
+
+
+hive> from employee_details select count(name),skill group by skill;
+Query ID = acadgild_20170503234747_eb7e7adc-d4b6-4e61-a2cf-cead9d41af35
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1493543267948_0008, Tracking URL = http://localhost:8088/proxy/application_1493543267948_0008/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1493543267948_0008
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-05-03 23:47:49,828 Stage-1 map = 0%,  reduce = 0%
+2017-05-03 23:47:56,431 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.09 sec
+2017-05-03 23:48:05,063 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.49 sec
+MapReduce Total cumulative CPU time: 2 seconds 490 msec
+Ended Job = job_1493543267948_0008
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 2.49 sec   HDFS Read: 399 HDFS Write: 52 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 490 msec
+OK
+1	ASP
+2	Big Data
+1	C#
+1	DBA
+2	Java
+1	Web Technology
+Time taken: 27.887 seconds, Fetched: 6 row(s)
+hive> 
+
+
+
+
+

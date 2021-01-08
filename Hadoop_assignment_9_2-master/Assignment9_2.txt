@@ -1,0 +1,160 @@
+1. Find the number of students who scored less than 5(50%)---------------------------------------------------------
+Commands ---------------------------------------------
+student_set = load 'studentDS.txt' USING PigStorage(',') AS (Name:chararray, ColUndertaken:chararray, Dob:chararray, Stream:chararray, Grade:float, State:chararray, City:chararray);
+grade_lt_5 = filter student_set by Grade<5;
+grade_lt_5_all = group grade_lt_5 all;
+foreach grade_lt_5_all generate COUNT(grade_lt_5);
+dump grade_lt_5_count
+
+
+Output -----------------------------------------------
+(188)
+
+====================================================
+2. List the name of students who are from Alaska. -----------------------------
+Commands -------------------------
+grunt> student_name_alaska = filter student_set by State matches 'alaska';
+grunt> student_name_alaska_show  = foreach stuent_name_alaska generate Name;
+dump student_name_alaska_show
+
+
+Output ---------------------------
+(BELL)
+(DAVIS)
+(LOGAN)
+(YOUNG)
+(COWEN)
+(DISHONG)
+(GIBSON)
+(IMMILE)
+(KEYSER)
+(POLK)
+(ROBTS&CMRN)
+(STEPHENS)
+(WEIRS)
+(JACOB)
+(BARBARA)
+(GEORGE)
+(SARAH)
+(WILLIAM)
+(JOHN)
+(JOHN)
+(STILLWEL)
+(Albright)
+(Bowman)
+(Brunner)
+(Carson)
+(Diller)
+(Denyes)
+(Ellmaker)
+(Fisher)
+(Gumpf)
+(Hartman)
+(Halbach)
+(Huber)
+(Houser)
+(Jordan)
+(Keubler)
+(Kendig)
+(Long)
+(McGinnis)
+(Miller)
+(Nourse)
+(Quinn)
+(Rotharmel)
+(Sherer)
+(Sherwood)
+(Voight)
+(Waters)
+(Wiley)
+(Zahm)
+(Matthew)
+(Peter)
+(Christian)
+(George)
+(Alexander)
+(Frederick)
+(Michael)
+(Richard)
+(Jacob)
+(Joseph)
+(John W)
+(Michael O)
+(Daniel)
+(William)
+(William)
+(Joseph)
+(Henry)
+(Samue)
+
+
+
+3. How many government collages are there in Alabama? ----------------------------------------
+Command --------------------------------
+col_alabama = filter student_set by State matches 'alabama';
+govt_col_alabama = filter col_alabama by ColUndertaken matches 'government';
+govt_col_alabama_all =group govt_col_alabama all
+govt_col_alabama_count = foreach govt_col_alabama_all generate COUNT(govt_col_alabama);
+dump govt_col_alabama_count
+
+Output ---------------------------------
+(2198)
+
+=========================================================================
+
+
+4. List the name of students who are from Oregon and persuing BE. 
+Commands ---------------------------------------
+student_oregon = filter student_set by State matches 'oregon';
+student_oregon_BE = filter student_oregon by Stream matches 'BE';
+student_oregon_BE_name = foreach student_oregon_BE generate Name;
+dump student_oregon_BE_name
+
+
+Output -----------------------------------------
+(BLOOM)
+(PATTERSON)
+(WAGGONER)
+(IMMILE)
+(SHOCK)
+(WHITE)
+(JOHN)
+(RICHARD)
+(JACOB)
+(Albright)
+(Buckius)
+(Bowman)
+(Cordes)
+(Danner)
+(Donas)
+(Ehrisman)
+(Frick)
+(Grimler)
+(Heinitsh)
+(Himmelsbach)
+(Hubley)
+(Kitch)
+(Lambert)
+(McNair)
+(Naumann)
+(Royal)
+(Shindle)
+(Wayne)
+(Reformed)
+(P.K.)
+(Charles H)
+(Jacob)
+(Daniel)
+(George)
+(John)
+(Peter)
+(George B)
+(Philip)
+(Dennis)
+(George)
+(Edwin)
+(Frederick)
+
+
+
+

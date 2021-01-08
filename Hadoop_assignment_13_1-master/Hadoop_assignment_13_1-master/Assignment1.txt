@@ -1,0 +1,30 @@
+1. What is RDD? 
+Ans:-
+• RDD’s in Spark are immutable distributed collection of objects. 
+• Each RDD is split into multiple partitions, which may be computed on different nodes of the cluster. 
+• The RDDs can contain any type of Python, Java or Scala objects, including userdefined classes. 
+• They are not actual data, but they are Objects, which contain information about data residing on the cluster. 
+• The RDDs try to solve these problems by enabling fault tolerant, distributed Inmemory computations. 
+
+
+
+2. Define Partitions. 
+Ans:-
+Spark manages data using partitions that helps parallelize distributed data processing with minimal network traffic for sending data between executors.
+By default, Spark tries to read data into an RDD from the nodes that are close to it. Since Spark usually accesses distributed partitioned data, to optimize transformation operations it creates partitions to hold the data chunks.
+
+3. What operations does RDD support? 
+Ans:-
+ In Spark, data is stored in partitions of the RDDs and store in worker nodes (datanodes) which are computed in parallel across all the nodes.
+• RDDs load the data for us and are resilient, which means they can be recomputed.
+• RDDs perform two types of operations: Transformations, which creates a new dataset from the previous RDD and Actions, which return a value to the driver program after performing the computation on the dataset.
+• RDDs keeps track of Transformations and check them periodically. If a node fails, it can rebuild the lost RDD partition on the other nodes, in parallel
+
+
+4. What do you understand by Transformations in Spark? 
+Ans:-
+An output RDD has partitions with records that originate from a single partition in the parent RDD. Only a limited subset of partitions used to calculate the result. + Spark groups narrow transformations as a stage which is called pipelining.
+
+5. Define Actions. 
+Ans:-
+Actions are RDD operations that produce non-RDD values. They materialize a value in a Spark program. In other words, a RDD operation that returns a value of any type but RDD[T] is an action.

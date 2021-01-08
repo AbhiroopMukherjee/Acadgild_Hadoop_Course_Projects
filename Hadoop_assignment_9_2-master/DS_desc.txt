@@ -1,0 +1,1 @@
+1. Name:chararray 2. ColUndertaken:chararray 3. Dob:chararray 4. Stream:chararray 5. Grade:float 6. State:chararray 7. City:chararray 

@@ -1,0 +1,123 @@
+
+File: Crime_data.csv
+Tool used:PIG
+
+
+Sample data:--------------------------------------
+
+A9722166	BHX372451	C8/3/2014 12:35	D027XX W CERMAK RD	E820	FTHEFT	G$500 AND UNDER	HRESTAURANT	IFALSE	JFALSE	K1023	L10	28	30	6	1158209	1889313	2014	8/10/2014 12:34	41.85202014	-87.6948163	(41.852020138, -87.694816295)
+
+Dataset description -----------------------------------
+ID,Case Number,Date,Block,IUCR,Primary Type,Description,Location Description,Arrest,Domestic,Beat,District,Ward,Community Area,FBICode,X Coordinate,Y Coordinate,Year,Updated On,Latitude,Longitude,Location 
+
+
+Data loading ---------------------------------------------
+crime_data = LOAD 'Crime_data.csv' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'NO_MULTILINE', 'UNIX', 'SKIP_INPUT_HEADER') AS (ID:int, case_no:chararray, date:chararray, block:chararray, iucr:chararray, primary_type:chararray, descrption:chararray, location:chararray, arrest:chararray, domestic:chararray, beat:int, district:int, ward:int, comm_area:int, fbicode:chararray, Y:float, X:float, year:int, updated:chararray, lat:float, long:float, loc:chararray);
+
+
+Task executions ----------------------------------------
+1. Write a MapReduce/Pig program to calculate the number of cases investigated under each FBI code ---------------
+
+Commands -------
+group_fbicode = group crime_data by fbicode;
+cases_per_fbicode = foreach group_fbicode generate group, COUNT(crime_data.ID);
+dump cases_per_fbicode;
+
+output----------
+(02,1502)
+(03,10596)
+(05,14842)
+(06,64329)
+(07,11105)
+(09,445)
+(10,1551)
+(11,13757)
+(12,27)
+(13,57)
+(14,31301)
+(15,3694)
+(16,1787)
+(17,1126)
+(18,25207)
+(19,434)
+(20,1267)
+(22,371)
+(24,4046)
+(26,29474)
+(01A,533)
+(01B,6)
+(04A,4994)
+(04B,7710)
+(08A,14167)
+(08B,46938)
+(,1)
+
+
+
+2. Write a MapReduce/Pig program to calculate the number of cases investigated under FBI code 22. -------------------
+
+Commands------
+cases_per_fbicode_equals_22 = filter cases_per_fbicode by group matches '22';
+dump cases_per_fbicode_equals_22;
+
+output----------
+(22,371)
+
+
+
+3. Write a MapReduce/Pig program to calculate the number of arrests in theft district wise. --------------------
+
+Commands -------------------------
+filter_theft = filter crime_data by primary_type matches 'THEFT';
+filter_theft_arrest = filter filter_theft by arrest matches 'true';
+group_filter_district = group filter_theft_arrest by district;
+count_arrest_theft_dstrict = foreach group_filter_district generate group, COUNT(filter_theft_arrest.ID);
+dump count_arrest_theft_dstrict;
+
+Output ----------------
+(1,1124)
+(2,227)
+(3,162)
+(4,230)
+(5,286)
+(6,652)
+(7,176)
+(8,471)
+(9,320)
+(10,170)
+(11,178)
+(12,360)
+(14,228)
+(15,115)
+(16,177)
+(17,237)
+(18,734)
+(19,501)
+(20,244)
+(22,220)
+(24,226)
+(25,596)
+
+
+4. Write a MapReduce/Pig program to calculate the number of arrests done between October 2014 and October 2015.---------
+
+Commands ----------------
+grunt> date = foreach crime_data generate (INT)REGEX_EXTRACT(date,'([0-9]+).*',1) AS month;
+
+
+
+crime_data_14 = filter crime_data by year==2014;
+crime_data_14_oct = filter crime_data_14 by (INT)REGEX_EXTRACT(date,'([0-9]+).*',1)>10;
+
+crime_data_15 = filter crime_data by year==2015;
+crime_data_15_oct = filter crime_data_15 by (INT)REGEX_EXTRACT(date,'([0-9]+).*',1)<10;
+
+crime_data_oct1415 = union crime_data_14_oct, crime_data_15_oct;
+
+crime_data_oct1415_arrest = filter crime_data_oct1415 by arrest matches 'true';
+crime_data_oct1415_arrest_group = group crime_data_oct1415_arrest all;
+crime_data_oct1415_arrest_count = foreach crime_data_oct1415_arrest_group generate COUNT(crime_data_oct1415_arrest.ID);
+
+Output --------------------
+(58248)
+
