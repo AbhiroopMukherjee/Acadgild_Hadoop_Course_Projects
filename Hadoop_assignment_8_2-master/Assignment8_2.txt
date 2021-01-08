@@ -1,0 +1,223 @@
+1) Concat 
+Commands -----------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:chararray, emp_name:chararray, emp_salary:chararray);
+emp_with_Sal = foreach emp generate CONCAT(emp_name,' with ID:',emp_id,' is earning:',emp_salary);
+dump emp_with_Sal
+
+Output -------------------------
+(Amitabh with ID:101 is earning:20000)
+(Shahrukh with ID:102 is earning:10000)
+(Akshay with ID:103 is earning:11000)
+(Anubhav with ID:104 is earning:5000)
+(Pawan with ID:105 is earning:2500)
+(Aamir with ID:106 is earning:25000)
+(Salman with ID:107 is earning:17500)
+(Ranbir with ID:108 is earning:14000)
+(Katrina with ID:109 is earning:1000)
+(Priyanka with ID:110 is earning:2000)
+(Tushar with ID:111 is earning:500)
+(Ajay with ID:112 is earning:5000)
+(Jubeen with ID:113 is earning:1000)
+(Madhuri with ID:114 is earning:2000)
+grunt> 
+
+================================================================
+
+2) Tokenize 
+Commands--------------------------------
+lines = load 'WCFile' AS (line:Chararray);
+twords = Foreach lines generate TOKENIZE(line) AS word;
+words = Foreach lines generate FLATTEN(TOKENIZE(line)) as word;
+grouped = group words by word;
+dump grouped
+
+Output----------------------------------
+cess : 1
+(.,{(.),(.)})
+(?,{(?),(?),(?),(?)})
+(as,{(as)})
+(is,{(is),(is),(is),(is)})
+(on,{(on)})
+(How,{(How),(How)})
+(Sir,{(Sir)})
+(are,{(are),(are)})
+(how,{(how),(how)})
+(too,{(too)})
+(you,{(you),(you)})
+(Mine,{(Mine)})
+(Work,{(Work)})
+(fine,{(fine),(fine)})
+(here,{(here)})
+(work,{(work)})
+(you.,{(you.)})
+(Hello,{(Hello)})
+(Thank,{(Thank)})
+(going,{(going)})
+(well.,{(well.)})
+(boring,{(boring),(boring)})
+(pretty,{(pretty),(pretty)})
+(your's,{(your's)})
+(Everything,{(Everything),(Everything)})
+
+======================================================
+3) Sum 
+Commands-----------------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int, emp_rating:int);
+emp_by_rating = group emp by emp_rating;
+TotalSal_by_rating = foreach emp_by_rating generate group,SUM(emp.emp_salary);
+dump TotalSal_by_rating
+
+
+Output ------------------------------
+(1,46500)
+(2,34500)
+(3,25000)
+(4,6000)
+(5,4500)
+
+================================================================
+
+4) Min 
+Commands -----------------------
+min_sal_by_rating = foreach emp_by_rating generate group, MIN(emp.emp_salary);
+dump min_sal_by_rating
+
+Output ----------------------------------------------------
+(1,500)
+(2,2000)
+(3,11000)
+(4,1000)
+(5,2000)
+
+================================================================
+
+5) Max 
+Commands -----------------------
+max_sal_by_rating = foreach emp_by_rating generate group, MAX(emp.emp_salary);
+dump max_sal_by_rating
+
+Output ----------------------------------------------------
+(1,25000)
+(2,17500)
+(3,14000)
+(4,5000)
+(5,2500)
+
+================================================================
+
+6) Limit 
+Commands -----------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int);
+five_emp = limit emp 5;
+dump five_emp;
+
+Output ----------------------------------------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int);
+five_emp = limit emp 5;
+dump five_emp;
+describe five_emp;
+
+================================================================
+
+7) Store 
+Commands -----------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int);
+five_emp = limit emp 5;
+dump five_emp;
+STORE five_emp into 'Five employees';
+
+Output ----------------------------------------------------
+grunt> cd Five_employees
+grunt> ls
+file:/home/acadgild/PIG/Five_employees/part-r-00000<r 1>	86
+file:/home/acadgild/PIG/Five_employees/_SUCCESS<r 1>	0
+grunt> cat part-r-00000
+101	Amitabh	20000
+102	Shahrukh	10000
+103	Akshay	11000
+104	Anubhav	5000
+105	Pawan	2500
+grunt> 
+
+================================================================
+
+
+8) Distinct 
+
+Commands -------------------------------------------------
+emp = load 'count_distinct.txt' using PigStorage(',') as (name:chararray, rating, age);
+grpd = group emp by rating;
+uniqcnt = foreach grpd {
+                        name_nested = emp.name;
+                        uniq_name = distinct name_nested;
+                        generate group, COUNT(uniq_name);
+          };
+
+Output ----------------------------------------------------
+(2,2)
+(4,2)
+
+================================================================
+
+
+9) Flatten 
+Commands -------------------------------------------------
+lines = LOAD '/home/acadgild/pig/Session2/data/wordcountdoc' AS (line:chararray);
+twords = FOREACH lines GENERATE TOKENIZE(line) as word;
+words = FOREACH lines GENERATE FLATTEN(TOKENIZE(line)) as word;
+grouped = GROUP words BY word;
+wordcount = FOREACH grouped GENERATE group, COUNT(word);
+DUMP wordcount;
+
+Output ----------------------------------------------------
+.,2
+?,4
+as,1
+is,4
+on,1
+How,2
+Sir,1
+are,2
+how,2
+too,1
+you,2
+Mine,1
+Work,1
+fine,2
+here,1
+work,1
+you.,1
+Hello,1
+Thank,1
+going,1
+well.,1
+boring,2
+pretty,2
+your's,1
+Everything,2
+
+================================================================
+
+10) IsEmpty 
+
+Commands -------------------------------------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int);
+emp_expenses = LOAD 'employee_expenses.txt' AS (emp_id:int, expenses:int);
+grunt> grouped_data = COGROUP emp by emp_id, emp_expenses by emp_id;
+grunt> filtered_grouped_data = filter grouped_data by isEmpty(emp_expenses.expenses);
+grunt> dump filtered_grouped_data
+
+
+Output ----------------------------------------------------
+
+
+(103,{(103,Akshay,11000)},{})
+(106,{(106,Aamir,25000)},{})
+(107,{(107,Salman,17500)},{})
+(108,{(108,Ranbir,14000)},{})
+(109,{(109,Katrina,1000)},{})
+(111,{(111,Tushar,500)},{})
+(112,{(112,Ajay,5000)},{})
+(113,{(113,Jubeen,1000)},{})
+(115,{(115,Amitabh,15000)},{})
+

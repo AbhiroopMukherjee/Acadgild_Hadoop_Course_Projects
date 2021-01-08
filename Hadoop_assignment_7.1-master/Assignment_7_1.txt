@@ -1,0 +1,58 @@
+1. Why Map-reduce program is needed in Pig Programming? 
+Ans---------------
+Pig runs on Hadoop. It makes use of both the Hadoop Distributed File System, HDFS, and Hadoop’s processing system, MapReduce. It works as a platform which is an abstraction to the actual Map reduce engine. All the scripts and pig commands eventually get converted into series of map reduce programs by the PIG engine and executes those in order to get the results.
+
+
+
+2. What are advantages of pig over MapReduce? 
+Ans--------------------------------
+ Pig Latin provides all of the standard data-processing operations, such as join, filter, group by, order by, union, etc. 
+ MapReduce requires programmers: Programmers must think in terms of map and reduce functions. Most probably Java programmers are required.
+ In Pig Latin joins and ordering codes comprise of 8-9 lines of code and take few minutes to write and debug. The same code in MapReduce will span hundred lines of code and takes hours to develop.
+ Pig provides high-level language that can be used by: Data Analysts & Data Scientists
+
+
+ 
+ 
+3. What is pig engine and what is its importance? 
+Ans------------------------------
+The engine first parses or checks for the syntax, plans for execution and then executes series of map reduce programs on HDFS to get the output.
+
+
+
+4. What are the modes of Pig execution? 
+Ans---------------------------------------
+Following are the modes for pig execution:-
+A. Local mode where pig can pick the file up from the local file system.
+B. HADOOP mode where the input files needs to reside on HDFS.
+
+
+5. What is grunt shell in Pig? 
+Ans---------------------------------------
+It's an interactive shell of PIG where we can execute PIG commands sequentially to arrive to the output.
+
+
+
+
+6. What are the features of Pig Latin language? 
+Ans---------------------------------------
+Rich set of operators − It provides many operators to perform operations like join, sort, filer, etc.
+Ease of programming − Pig Latin is similar to SQL and it is easy to write a Pig script if you are good at SQL.
+Optimization opportunities − The tasks in Apache Pig optimize their execution automatically, so the programmers need to focus only on semantics of the language.
+multi-query approach, thereby reducing the length of codes. For example, an operation that would require you to type 200 lines of code (LoC) in Java can be easily done by typing as less as just 10 LoC in Apache Pig. Ultimately Apache Pig reduces the development time by almost 16 times.
+
+
+
+7. Is Pig latin commands case sensitive? 
+Ans---------------------------------------
+It is case sensitive for all the variables and references used but not for the pig keywords.
+
+
+8. What is a data flow language? 
+Ans---------------------------------------
+In computer programming, dataflow programming is a programming paradigm that models a program as a directed graph of the data flowing between operations, thus implementing dataflow principles and architecture. Pig Latin script describes a directed acyclic graph (DAG), where the edges are data flows and the nodes are operators that process the data.
+
+
+
+
+

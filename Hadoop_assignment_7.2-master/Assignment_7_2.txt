@@ -1,0 +1,48 @@
+
+a--------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int, emp_rating:int);
+sorted_emp_rating_name = order sorted_emp_rating by emp_rating,emp_name;
+top_5_emp = limit sorted_emp_rating_name 5;
+top_5_emp_name_id = foreach top_5_emp generate emp_id,emp_name;
+dump top_5_emp_name_id
+
+
+
+b--------------------
+filtered_emp_id_odd = filter emp by emp_id%2!=0;
+top_odd_emp_salary = order filtered_emp_id_odd by emp_salary,emp_name;
+top_3_odd_emp_salary = limit top_odd_emp_salary 3;
+top_3_odd_emp_salary_id_name = foreach top_3_odd_emp_salary generate emp_id,emp_name;
+dump top_3_odd_emp_salary_id_name
+
+
+
+c--------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int);
+emp_expenses = LOAD 'employee_expenses.txt' AS (emp_id:int, expenses:int);
+joined_data = join emp by emp_id , emp_expenses by emp_id;
+sorted_joined_data_expense_name = order joined_data by emp_expenses::expenses desc, emp::emp_name;
+top_spender = limit sorted_joined_data_expense_name 1
+top_spender_id_name = foreach top_spender generate emp::emp_id,emp::emp_name;
+dump top_spender_id_name
+
+
+d---------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int);
+emp_expenses = LOAD 'employee_expenses.txt' AS (emp_id:int, expenses:int);
+joined_data = join emp by emp_id , emp_expenses by emp_id;
+joined_data_id_name = foreach joined_data generate emp::emp_id,emp::emp_name;
+dump joined_data_id_name
+
+
+
+e----------------------
+emp = LOAD 'employee_details.txt' USING PigStorage(',') AS (emp_id:int, emp_name:chararray, emp_salary:int);
+emp_expenses = LOAD 'employee_expenses.txt' AS (emp_id:int, expenses:int);
+joined_data_left = join emp by emp_id left outer, emp_expenses by emp_id;
+joined_data_left_expense_empty = filter joined_data_left by emp_expenses::expenses is null; joined_data_left_expense_empty_id_name = foreach joined_data_left_expense_empty generate emp::emp_id, emp::emp_name;
+dump joined_data_left_expense_empty_id_name
+
+
+
+
