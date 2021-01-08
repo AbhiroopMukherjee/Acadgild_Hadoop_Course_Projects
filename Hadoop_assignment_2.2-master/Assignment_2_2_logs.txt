@@ -1,0 +1,79 @@
+----------------- Creation of the file in LFS ------------------ 
+[acadgild@localhost ~]$ vim max-temp.txt
+[acadgild@localhost ~]$ cat max-temp.txt 
+10-01-1990,10
+10-05-1990,15
+10-10-1990,05
+10-01-1991,17
+10-06-1991,20
+10-11-1991,12
+10-01-1995,14
+10-06-1995,50
+10-03-1989,14
+10-07-1989,18
+
+----------------------------- Moving the file to HDFS ------------------------------------------
+[acadgild@localhost ~]$ hdfs dfs -appendToFile max-temp.txt hadoop\max-temp.txt
+17/04/30 22:34:26 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop
+17/04/30 22:34:43 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 2 items
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:15 hadoop/newfile
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ hdfs dfs -appendToFile max-temp.txt hadoop/max-temp.txt
+17/04/30 22:35:26 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop
+17/04/30 22:35:31 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 3 items
+-rw-r--r--   1 acadgild supergroup        140 2017-04-30 22:35 hadoop/max-temp.txt
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:15 hadoop/newfile
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+
+
+------------- Verifying file contents in hdfs ----------------------------------------------------------
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop\max-temp.txt
+17/04/30 22:36:03 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+10-01-1990,10
+10-05-1990,15
+10-10-1990,05
+10-01-1991,17
+10-06-1991,20
+10-11-1991,12
+10-01-1995,14
+10-06-1995,50
+10-03-1989,14
+10-07-1989,18
+[acadgild@localhost ~]$ hdfs dfs -cat hadoop/max-temp.txt
+17/04/30 22:36:13 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+10-01-1990,10
+10-05-1990,15
+10-10-1990,05
+10-01-1991,17
+10-06-1991,20
+10-11-1991,12
+10-01-1995,14
+10-06-1995,50
+10-03-1989,14
+10-07-1989,18
+
+---------------------- Changing the file permission of the file -----------------------------------------------------------
+
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop
+17/04/30 22:49:26 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 3 items
+-rw-r--r--   1 acadgild supergroup        140 2017-04-30 22:35 hadoop/max-temp.txt
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:15 hadoop/newfile
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ 
+[acadgild@localhost ~]$ hdfs dfs -chmod 770 hadoop/max-temp.txt
+17/04/30 22:51:38 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[acadgild@localhost ~]$ hdfs dfs -ls hadoop
+17/04/30 22:51:43 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 3 items
+-rwxrwx---   1 acadgild supergroup        140 2017-04-30 22:35 hadoop/max-temp.txt
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:15 hadoop/newfile
+-rw-r--r--   1 acadgild supergroup          0 2017-04-30 16:16 hadoop/word-count.txt
+[acadgild@localhost ~]$ 
